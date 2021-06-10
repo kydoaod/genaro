@@ -1,0 +1,44 @@
+{
+    "local": {
+        "HOST": "localhost",
+        "PROTOCOL" : "http",
+        "LOG_PATH": "logs/",
+        "PORT": 3000,
+        "DB": {
+                "user": "user",
+                "host": "host",
+                "database": "database",
+                "password": "password",
+                "dialect": "postgres",
+                "port": "port"
+        },
+        "ADMIN_CRED" : {
+            "username" : "username",
+            "algorithm": "algorithm",
+            "password" : "password",
+            "token" : "token",
+            "email": "email@email.com",
+            "email_password": "P@$$w0rd"
+        },
+        "AZURE_CREDS":{
+            "credentials": {
+                "tenantID": "Enter_the_Tenant_ID",
+                "clientID": "Enter_the_Client_ID",
+                "audience": "Enter_the_Client_ID"
+            },
+            "resource": {
+                "scope": ["access_as_user"]
+            },
+            "metadata": {
+                "authority": "login.microsoftonline.com",
+                "discovery": ".well-known/openid-configuration",
+                "version": "v2.0"
+            },
+            "settings": {
+                "validateIssuer": true,
+                "passReqToCallback": false,
+                "loggingLevel": "info"
+            }
+        }
+    }
+}
