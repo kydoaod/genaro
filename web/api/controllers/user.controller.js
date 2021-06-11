@@ -5,12 +5,24 @@ class UserController {
         this.accountService = new AccountService();
     }
 
+    async login(req, res) {
+        this.accountService.login(req, res);
+        res.status(200).send({ success: true });
+    }
+    
     async getInfo(req, res) {
         res.status(200).send({ success: true });
     }
 
-    async login(req, res) {
-        this.accountService.login(req, res);
+    async getMessages(req, res) {
+        res.status(200).send({ success: true });
+    }
+
+    async getSettings(req, res) {
+        res.status(200).send({ success: true });
+    }
+
+    async updateSettings(req, res) {
         res.status(200).send({ success: true });
     }
 }
