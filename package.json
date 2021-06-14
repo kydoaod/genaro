@@ -8,7 +8,7 @@
   "main": "app.js",
   "scripts": {
     "heroku-prebuild": "cd web && npm install",
-    "build": "cd web && npm install",
+    "build": "cd web && npm install && cd views && npm run build",
     "start": "cd web && node app.js"
   },
   "dependencies": {
