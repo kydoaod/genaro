@@ -8,6 +8,10 @@ const cookieParser = require('cookie-parser');
 const handleErrors = require('./middlewares/handle-errors.middleware');
 const cors = require('./middlewares/cors.middleware');
 const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./openapi.yaml');
+const { passport, bearerStrategy } = require("./config/config");
 
 const port = process.env.PORT || 3000;
 const routePath = './routes/';
@@ -20,6 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cors);
 app.use(express.static(path.join(__dirname, './views/build')));
 app.use('/', express.static(path.join(__dirname, './views/build')));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Load Routes Dynamically
 fs.readdirSync(routePath).forEach(function (file) {

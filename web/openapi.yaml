@@ -1,0 +1,377 @@
+swagger: "2.0"
+info:
+  description: "Documentation for genaro website"
+  version: "1.0.0"
+  title: "Genaro API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "petstore.swagger.io"
+basePath: "/v2"
+tags:
+- name: "User"
+  description: "Everything about user details"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+- name: "Leads"
+  description: "APIs for Leads"
+- name: "Payments"
+  description: "APIs for payments"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://swagger.io"
+schemes:
+- "https"
+- "http"
+paths:
+  /login:
+    post:
+      tags:
+      - "User"
+      summary: "Login user"
+      description: ""
+      operationId: "login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Credentials of user"
+        required: true
+        schema:
+          $ref: "#/definitions/Login"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+              token:
+                type: "string"
+        "403":
+          description: "Invalid username or password"
+  /events:
+    get:
+      tags:
+      - "Leads"
+      summary: "Fetch events"
+      description: ""
+      operationId: "getEvents"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Events parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+  /leads:
+    get:
+      tags:
+      - "Leads"
+      summary: "Get leads"
+      description: ""
+      operationId: "getLeads"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch leads"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+  /heroes:
+    get:
+      tags:
+      - "Leads"
+      summary: "Get top heroes"
+      description: ""
+      operationId: "getHeroes"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch heroes"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+  /new-hero:
+    post:
+      tags:
+      - "Leads"
+      summary: "Add new hero"
+      description: ""
+      operationId: "newHero"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Add hero"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+  /balance:
+    post:
+      tags:
+      - "Payments"
+      summary: "Get balance"
+      description: ""
+      operationId: "getBalance"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch events"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+  /method:
+    get:
+      tags:
+      - "Payments"
+      summary: "Get payment method"
+      description: ""
+      operationId: "getMethod"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch payment method"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+    put:
+      tags:
+      - "Payments"
+      summary: "Change payment method"
+      description: ""
+      operationId: "updateMethod"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch events"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+  /payments:
+    get:
+      tags:
+      - "Payments"
+      summary: "Get payments"
+      description: ""
+      operationId: "getPayment"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch payment method"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+  /earnings:
+    get:
+      tags:
+      - "Payments"
+      summary: "Get earnings"
+      description: ""
+      operationId: "getEarnings"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch events"
+        required: true
+        schema:
+          $ref: "#/definitions/Holder"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+        "403":
+          description: "Invalid input"
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+  Login:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+    xml:
+      name: "User"
+  Holder:
+    type: "object"
+    properties:
+      holder:
+        type: "string"
+    xml:
+      name: "User"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
