@@ -27,27 +27,9 @@ try {
     }); 
 
 } catch(e) {
-    console.log(e);
-    
+    console.log(e);   
     console.log('Error: Could not find configuration file. Please create config.json file, base it from config.json.example');
-    /**TEMPORARY**/
-    process.env["DB"] = JSON.stringify({
-                "user": "1XHs3O5D26",
-                "host": "remotemysql.com",
-                "database": "1XHs3O5D26",
-                "password": "iImheZ6v1F",
-                "port": 3306,
-                "dialect": "mysql"
-    });
-    process.env["ADMIN_CRED"] = JSON.stringify({
-            "username" : "username",
-            "algorithm": "algorithm",
-            "password" : "password",
-            "token" : "token",
-            "email": "email@email.com",
-            "email_password": "P@$$w0rd"
-    });
-    //process.exit(1);
+    process.exit(1);
     
 }
 

@@ -11,7 +11,6 @@ const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./openapi.yaml');
-const { passport, bearerStrategy } = require("./config/config");
 
 const port = process.env.PORT || 3000;
 const routePath = './routes/';

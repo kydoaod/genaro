@@ -6,8 +6,8 @@ class UserController {
     }
 
     async login(req, res) {
-        this.accountService.login(req, res);
-        res.status(200).send({ success: true });
+        let loginResponse = await this.accountService.login(req, res);
+        res.status(loginResponse.success? 200 : 403).send(loginResponse);
     }
     
     async getInfo(req, res) {
