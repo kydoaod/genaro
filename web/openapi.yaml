@@ -103,7 +103,9 @@ paths:
         description: "Fetch leads"
         required: true
         schema:
-          $ref: "#/definitions/Holder"
+          type: array
+          items:
+            $ref: "#/definitions/Lead"
       responses:
         "200":
           description: "successful operation"
@@ -361,7 +363,39 @@ definitions:
       holder:
         type: "string"
     xml:
-      name: "User"
+      name: "Holder"
+  Lead:
+    type: "object"
+    properties:
+      lead_id:
+        type: "string"
+      lead_name:
+        type: "string"
+      phone:
+        type: "string"
+      email:
+        type: "string"
+      address:
+        type: "string"
+      mode_contact:
+        type: "string"
+      type:
+        type: "string"
+      custom_details:
+        type: "string"
+      validated:
+        type: "integer"
+    xml:
+      name: "Lead"
+  Hero:
+    type: "object"
+    properties:
+      routine:
+        type: "array"
+      ref_id:
+        type: "string"
+    xml:
+      name: "Lead"
   ApiResponse:
     type: "object"
     properties:
