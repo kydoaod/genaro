@@ -32,6 +32,10 @@ fs.readdirSync(routePath).forEach(function (file) {
 });
 app.use(handleErrors);
 
+app.get('/*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, './views/build/index.html'));
+});
+
 app.listen(port, process.env.HOST, function () {
   console.log("The server is listening at http://" + process.env.HOST + ":" + port)
 });
