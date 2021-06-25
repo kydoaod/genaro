@@ -16,6 +16,7 @@
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "google-auth-library": "^7.1.2",
     "http-build-query": "^0.7.0",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.2.1",
