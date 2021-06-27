@@ -46,10 +46,10 @@ try {
         "email": "email@email.com",
         "email_password": "P@$$w0rd"
     });
-    process.env["GOOGLE_OAUTH_CRED"] = {
+    process.env["GOOGLE_OAUTH_CRED"] = JSON.stringify({
         "ClientID":"560202600909-c94rsttjg9bcbjgn8a4h9nrgcbcl1gpf.apps.googleusercontent.com",
         "ClientSecret":"kF14KRzrmZqd87Ecj1wR1acf"
-    }
+    });
     //process.exit(1);
     
 }
