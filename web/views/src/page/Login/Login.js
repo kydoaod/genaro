@@ -1,6 +1,8 @@
 import React from 'react';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
+import LinkedIn  from 'react-linkedin-login-oauth2';
+import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png'
 
 import './Login.css';
 import handleLogin from '../../services/LoginService';
@@ -27,6 +29,15 @@ function Login() {
         callback={responseFacebook}
         icon="fa-facebook" 
       />
+      <LinkedIn
+          clientId="865p81rgrlnw9r"
+          scope="r_emailaddress"
+          onFailure={handleLogin.linkedInLoginFail}
+          onSuccess={responseFacebook}
+          redirectUri={window.location.origin + "/linkedin"}
+      >
+          <img src={linkedin} alt="Log in with Linked In" style={{ maxWidth: '180px' }} />
+      </LinkedIn>
     </div>
   );
 }

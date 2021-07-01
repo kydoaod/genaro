@@ -29,6 +29,12 @@ const handleLogin = {
     // const data = await res.json();
     // console.log(data);
     // store returned user in a context?
+  },
+  linkedInLogin: (linkedInData) => {
+    console.log(linkedInData)
+  },
+  linkedInLoginFail: (linkedInData) => {
+    console.log(linkedInData)
   }
 }
 export default handleLogin;

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import './index.css';
 import App from './App';
 import Login from './page/Login/Login';
@@ -14,6 +15,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/" component={App} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/linkedin" component={LinkedInPopUp} />
       </Switch>
     </div>
   </Router>,
