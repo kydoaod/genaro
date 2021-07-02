@@ -11,6 +11,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       allowNull: false
     },
+    googleId: {
+      type: DataTypes.STRING(50),
+      allowNull: true
+    },
+    fbId: {
+      type: DataTypes.STRING(50),
+      allowNull: true
+    },
     password: {
       type: DataTypes.STRING(255),
       allowNull: false
