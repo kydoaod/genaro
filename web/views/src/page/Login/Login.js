@@ -33,7 +33,7 @@ function Login() {
           clientId="865p81rgrlnw9r"
           scope="r_emailaddress"
           onFailure={handleLogin.linkedInLoginFail}
-          onSuccess={responseFacebook}
+          onSuccess={handleLogin.linkedInLogin}
           redirectUri={window.location.origin + "/linkedin"}
       >
           <img src={linkedin} alt="Log in with Linked In" style={{ maxWidth: '180px' }} />
