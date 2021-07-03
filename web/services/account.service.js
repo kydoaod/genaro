@@ -16,12 +16,20 @@ class Account {
             where: {
                 email: req.body.username
             },
+            include:[{
+                model: db.type,
+                as: "type",
+                attributes:["type_name"]
+            }],
+            nest: true,
             raw:true
         });
         if(bcrypt.compareSync(req.body.password, credentials.password)){
             return {
                 success: true,
-                token: jwt.sign({email: credentials.email}, JSON.parse(process.env.ADMIN_CRED).algorithm, { expiresIn: '7d' })
+                token: jwt.sign({email: credentials.email}, JSON.parse(process.env.ADMIN_CRED).algorithm, { expiresIn: '7d' }),
+                type: credentials.type.type_name,
+                auth_type: "google"
             }
         } else {
             return {
@@ -68,7 +76,8 @@ class Account {
         return {
             success: true,
             token: jwt.sign({email: email}, JSON.parse(process.env.ADMIN_CRED).algorithm, { expiresIn: '7d' }),
-            type: credentials.type.type_name
+            type: credentials.type.type_name,
+            auth_type: "google"
         };
     }
 
@@ -92,15 +101,13 @@ class Account {
                 password: randomstring.generate(8),
                 type_id: 1 //Subject for discussion
             });
-        } else if(!credentials){
-            return {
-                success: false
-            }
         }
         return { 
             success: true,
             token: jwt.sign({email: credentials.fbId}, JSON.parse(process.env.ADMIN_CRED).algorithm, { expiresIn: '7d' }),
-            type: credentials.type.type_name
+            access_token: req.body.access_token,
+            type: credentials.type.type_name,
+            auth_type: "fb"
         };
     }
 
