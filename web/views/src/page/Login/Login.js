@@ -8,9 +8,6 @@ import './Login.css';
 import handleLogin from '../../services/LoginService';
 
 function Login() {
-  const responseFacebook = (response) => {
-    console.log(response);
-  }
   return (
     <div className="Authentication">
       <GoogleLogin
@@ -26,6 +23,9 @@ function Login() {
         autoLoad={true}
         fields="name,email,picture"
         scope="public_profile,user_friends"
+        xfbml={true}
+        version='3.2'
+        cookie={true}
         callback={handleLogin.fBLogin}
         icon="fa-facebook" 
       />
