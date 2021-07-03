@@ -30,8 +30,8 @@ try {
     console.log(e);   
     console.log('Error: Could not find configuration file. Please create config.json file, base it from config.json.example');
     /**TEMPORARY**/
-    process.env["HOST"] = "localhost";
-    process.env["PORT"] = 5000;
+    //process.env["HOST"] = "localhost";
+    //process.env["PORT"] = 5000;
     process.env["DB"] = JSON.stringify({
         "user": "1XHs3O5D26",
         "host": "remotemysql.com",
