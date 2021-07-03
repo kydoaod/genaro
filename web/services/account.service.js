@@ -101,6 +101,18 @@ class Account {
                 password: randomstring.generate(8),
                 type_id: 1 //Subject for discussion
             });
+            credentials = await db.users.findOne({
+                where: {
+                    fbId: req.body.id
+                },
+                include:[{
+                    model: db.type,
+                    as: "type",
+                    attributes:["type_name"]
+                }],
+                nest: true,
+                raw:true
+            });
         }
         return { 
             success: true,
