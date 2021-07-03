@@ -6,6 +6,7 @@ const sequelize = new Sequelize(DBConfig.database, DBConfig.user, DBConfig.passw
 
 const db = initModels(sequelize);
 (async () => {
+    await db.type.sync({ force: false });
     await db.users.sync({ force: false });
 })();
 module.exports = db;

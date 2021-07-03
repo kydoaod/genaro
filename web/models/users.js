@@ -23,9 +23,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    type: {
+    type_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'type',
+        key: 'type_id'
+      },
+      default: 1
     }
   }, {
     sequelize,
