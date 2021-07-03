@@ -104,7 +104,7 @@ class Account {
         }
         return { 
             success: true,
-            token: jwt.sign({email: credentials.fbId}, JSON.parse(process.env.ADMIN_CRED).algorithm, { expiresIn: '7d' }),
+            token: jwt.sign({email: req.body.id}, JSON.parse(process.env.ADMIN_CRED).algorithm, { expiresIn: '7d' }),
             access_token: req.body.access_token,
             type: credentials.type.type_name,
             auth_type: "fb"
