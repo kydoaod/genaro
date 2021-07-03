@@ -114,6 +114,7 @@ class Account {
                 raw:true
             });
         }
+        console.log(req.body);
         return { 
             success: true,
             token: jwt.sign({email: req.body.id}, JSON.parse(process.env.ADMIN_CRED).algorithm, { expiresIn: '7d' }),
