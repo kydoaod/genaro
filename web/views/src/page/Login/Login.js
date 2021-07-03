@@ -26,7 +26,7 @@ function Login() {
         autoLoad={true}
         fields="name,email,picture"
         scope="public_profile,user_friends"
-        callback={responseFacebook}
+        callback={handleLogin.fBLogin}
         icon="fa-facebook" 
       />
       <LinkedIn
