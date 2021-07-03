@@ -39,17 +39,16 @@ class Account {
     }
 
     async googleLogin(req, res){
-        const { token }  = req.body
+        const { token }  = req.body;
         const ticket = await client.verifyIdToken({
             idToken: token,
             audience: (JSON.parse(process.env.GOOGLE_OAUTH_CRED).ClientID)
         });
         const { name, email, sub, email_verified, at_hash } = ticket.getPayload();
-        // do token handling here
         let credentials = await db.users.findOne({
             where: {
                 [Op.or]: [
-                    { googleId: sub },
+                    { google_id: sub },
                     { email: email }
                 ]
             },
@@ -61,12 +60,29 @@ class Account {
             nest: true,
             raw:true
         });
+        
         if(!credentials && email_verified){
             await db.users.create({
+                name: name,
                 email: email,
-                googleId: sub,
+                google_id: sub,
                 password: at_hash,
                 type_id: 1 //Subject for discussion
+            });
+            credentials = await db.users.findOne({
+                where: {
+                    [Op.or]: [
+                        { google_id: sub },
+                        { email: email }
+                    ]
+                },
+                include:[{
+                    model: db.type,
+                    as: "type",
+                    attributes:["type_name"]
+                }],
+                nest: true,
+                raw:true
             });
         } else if(!credentials && !email_verified){
             return {
@@ -84,7 +100,7 @@ class Account {
     async fbLogin(req, res){
         let credentials = await db.users.findOne({
             where: {
-                fbId: req.body.id
+                fb_id: req.body.id
             },
             include:[{
                 model: db.type,
@@ -97,13 +113,13 @@ class Account {
         if(!credentials){
             await db.users.create({
                 email: "",
-                fbId: req.body.id,
+                fb_id: req.body.id,
                 password: randomstring.generate(8),
                 type_id: 1 //Subject for discussion
             });
             credentials = await db.users.findOne({
                 where: {
-                    fbId: req.body.id
+                    fb_id: req.body.id
                 },
                 include:[{
                     model: db.type,
@@ -114,11 +130,9 @@ class Account {
                 raw:true
             });
         }
-        console.log(req.body);
         return { 
             success: true,
             token: jwt.sign({email: req.body.id}, JSON.parse(process.env.ADMIN_CRED).algorithm, { expiresIn: '7d' }),
-            access_token: req.body.accessToken,
             type: credentials.type.type_name,
             auth_type: "fb"
         };

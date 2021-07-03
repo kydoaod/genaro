@@ -1,6 +1,7 @@
 
 const handleLogin = {
   googleLogin:  async googleData => {
+    console.log(googleData)
     const res = await fetch("/v1/auth/google", {
         method: "POST",
         body: JSON.stringify({

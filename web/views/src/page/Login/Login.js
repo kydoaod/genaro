@@ -23,9 +23,6 @@ function Login() {
         autoLoad={true}
         fields="name,email,picture"
         scope="public_profile,user_friends"
-        xfbml={true}
-        version='3.2'
-        cookie={true}
         callback={handleLogin.fBLogin}
         icon="fa-facebook" 
       />

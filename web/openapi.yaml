@@ -9,8 +9,8 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
+host: "localhost:5000"
+basePath: "/v1"
 tags:
 - name: "User"
   description: "Everything about user details"
@@ -28,13 +28,13 @@ schemes:
 - "https"
 - "http"
 paths:
-  /login:
+  /auth/standard:
     post:
       tags:
       - "User"
-      summary: "Login user"
+      summary: "Login user using normal means"
       description: ""
-      operationId: "login"
+      operationId: "authStandard"
       consumes:
       - "application/json"
       produces:
@@ -50,12 +50,57 @@ paths:
         "200":
           description: "successful operation"
           schema:
-            type: "object"
-            properties:
-              success:
-                type: "boolean"
-              token:
-                type: "string"
+            $ref: "#/apiResponses/auth_response"
+        "403":
+          description: "Invalid username or password"
+  /auth/google:
+    post:
+      tags:
+      - "User"
+      summary: "Login user using google account"
+      description: ""
+      operationId: "authGoogle"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Credentials of user"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginGoogle"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/apiResponses/auth_response"
+        "403":
+          description: "Invalid username or password"
+  /auth/fb:
+    post:
+      tags:
+      - "User"
+      summary: "Login user using fb account"
+      description: ""
+      operationId: "authFB"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Credentials of user"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginFB"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/apiResponses/auth_response"
         "403":
           description: "Invalid username or password"
   /events:
@@ -323,26 +368,38 @@ securityDefinitions:
     type: "apiKey"
     name: "api_key"
     in: "header"
+apiResponses:
+  auth_response:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      token:
+        type: "string"
+      type:
+        type: "string"
+      auth_type:
+        type: "string"
 definitions:
   User:
     type: "object"
     properties:
-      id:
+      user_id:
         type: "integer"
         format: "int64"
-      username:
-        type: "string"
-      firstName:
-        type: "string"
-      lastName:
-        type: "string"
       email:
         type: "string"
       password:
         type: "string"
+      name:
+        type: "string"
       phone:
         type: "string"
-      userStatus:
+      google_id:
+        type: "string"
+      fb_id:
+        type: "string"
+      type_id:
         type: "integer"
         format: "int32"
         description: "User Status"
@@ -354,6 +411,20 @@ definitions:
       username:
         type: "string"
       password:
+        type: "string"
+    xml:
+      name: "User"
+  LoginFB:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+    xml:
+      name: "User"
+  LoginGoogle:
+    type: "object"
+    properties:
+      token:
         type: "string"
     xml:
       name: "User"
@@ -392,6 +463,8 @@ definitions:
     properties:
       routine:
         type: "array"
+        items:
+          type: "string"
       ref_id:
         type: "string"
     xml:
