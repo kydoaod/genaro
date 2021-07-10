@@ -1,8 +1,8 @@
-//var AccountService = require('../../services/account.service');
+let AccountService = require('../../services/account.service');
 
 class PaymentController {
     constructor() {
-        //this.accountService = new AccountService();
+        this.accountService = new AccountService();
     }
 
     async getBalance(req, res) {
@@ -14,9 +14,10 @@ class PaymentController {
     }
 
     async getPayments(req, res) {
-        res.status(200).send({ success: true });
+        let payments = await this.accountService.getPayments(req.params.user_id);
+        res.status(payments.success? 200: 400).send(payments);
     }
-
+    
     async getEarnings(req, res) {
         res.status(200).send({ success: true });
     }

@@ -8,5 +8,7 @@ const db = initModels(sequelize);
 (async () => {
     await db.type.sync({ force: false });
     await db.users.sync({ force: false });
+    await db.payments.sync({ force: false });
+    await db.messages.sync({ force: false });
 })();
 module.exports = db;

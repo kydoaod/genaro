@@ -7,5 +7,7 @@ const apiUser = express.Router();
 apiUser.post('/auth/standard', wrap(async (req, res) => userController.login(req, res)));
 apiUser.post('/auth/google', wrap(async (req, res) => userController.googleLogin(req, res)));
 apiUser.post('/auth/fb', wrap(async (req, res) => userController.fbLogin(req, res)));
+apiUser.post('/analytics', wrap(async (req, res) => userController.getAnalytics(req, res)));
+apiUser.post('/messages', wrap(async (req, res) => userController.getMessages(req, res)));
 
 module.exports = apiUser;

@@ -45,12 +45,12 @@ paths:
         description: "Credentials of user"
         required: true
         schema:
-          $ref: "#/definitions/Login"
+          $ref: "#/definitions/request_login"
       responses:
         "200":
           description: "successful operation"
           schema:
-            $ref: "#/apiResponses/auth_response"
+            $ref: "#/definitions/auth_response"
         "403":
           description: "Invalid username or password"
   /auth/google:
@@ -70,12 +70,12 @@ paths:
         description: "Credentials of user"
         required: true
         schema:
-          $ref: "#/definitions/LoginGoogle"
+          $ref: "#/definitions/request_login_google"
       responses:
         "200":
           description: "successful operation"
           schema:
-            $ref: "#/apiResponses/auth_response"
+            $ref: "#/definitions/auth_response"
         "403":
           description: "Invalid username or password"
   /auth/fb:
@@ -95,14 +95,39 @@ paths:
         description: "Credentials of user"
         required: true
         schema:
-          $ref: "#/definitions/LoginFB"
+          $ref: "#/definitions/request_login_fb"
       responses:
         "200":
           description: "successful operation"
           schema:
-            $ref: "#/apiResponses/auth_response"
+            $ref: "#/definitions/auth_response"
         "403":
           description: "Invalid username or password"
+  /messages:
+    post:
+      tags:
+      - "User"
+      summary: "Get messages"
+      description: ""
+      operationId: "getMessages"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch analytics"
+        required: true
+        schema:
+          $ref: "#/definitions/request_messages"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/messages_response"
+        "400":
+          description: "Invalid input"
   /events:
     get:
       tags:
@@ -301,7 +326,7 @@ paths:
         "403":
           description: "Invalid input"
   /payments:
-    get:
+    post:
       tags:
       - "Payments"
       summary: "Get payments"
@@ -317,16 +342,38 @@ paths:
         description: "Fetch payment method"
         required: true
         schema:
-          $ref: "#/definitions/Holder"
+          $ref: "#/definitions/request_payment"
       responses:
         "200":
           description: "successful operation"
           schema:
-            type: "object"
-            properties:
-              success:
-                type: "boolean"
-        "403":
+            $ref: "#/definitions/payment_response"
+        "400":
+          description: "Invalid input"
+  /analytics:
+    post:
+      tags:
+      - "Payments"
+      summary: "Get analytics"
+      description: ""
+      operationId: "getAnalytics"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch analytics"
+        required: true
+        schema:
+          $ref: "#/definitions/request_analytics"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/analytics_response"
+        "400":
           description: "Invalid input"
   /earnings:
     get:
@@ -368,18 +415,6 @@ securityDefinitions:
     type: "apiKey"
     name: "api_key"
     in: "header"
-apiResponses:
-  auth_response:
-    type: "object"
-    properties:
-      success:
-        type: "boolean"
-      token:
-        type: "string"
-      type:
-        type: "string"
-      auth_type:
-        type: "string"
 definitions:
   User:
     type: "object"
@@ -405,36 +440,46 @@ definitions:
         description: "User Status"
     xml:
       name: "User"
-  Login:
+  Payments:
     type: "object"
     properties:
-      username:
+      payment_id:
+        type: "integer"
+        format: "int64"
+      user_id:
+        type: "integer"
+        format: "int64"
+      payment_type:
         type: "string"
-      password:
+      title:
+        type: "string"
+      processing_date:
         type: "string"
     xml:
-      name: "User"
-  LoginFB:
+      name: "Payments"
+  Messages:
     type: "object"
     properties:
-      id:
+      message_id:
+        type: "integer"
+        format: "int64"
+      user_id:
+        type: "integer"
+        format: "int64"
+      sender_id:
+        type: "integer"
+        format: "int64"
+      sender_name:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+      message:
+        type: "string"
+      message_datetime:
         type: "string"
     xml:
-      name: "User"
-  LoginGoogle:
-    type: "object"
-    properties:
-      token:
-        type: "string"
-    xml:
-      name: "User"
-  Holder:
-    type: "object"
-    properties:
-      holder:
-        type: "string"
-    xml:
-      name: "Holder"
+      name: "Messages"
   Lead:
     type: "object"
     properties:
@@ -469,16 +514,118 @@ definitions:
         type: "string"
     xml:
       name: "Lead"
-  ApiResponse:
+  Holder:
     type: "object"
     properties:
-      code:
+      holder:
+        type: "string"
+    xml:
+      name: "Holder"
+  request_login:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+    xml:
+      name: "User"
+  request_login_fb:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+    xml:
+      name: "User"
+  request_login_google:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+    xml:
+      name: "User"
+  request_payment:
+    type: "object"
+    properties:
+      user_id:
         type: "integer"
-        format: "int32"
+        format: "int64"
+    xml:
+      name: "request_payment"
+  request_analytics:
+    type: "object"
+    properties:
+      user_id:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "request_analytics"
+  request_messages:
+    type: "object"
+    properties:
+      user_id:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "request_messages"
+  auth_response:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      token:
+        type: "string"
       type:
         type: "string"
-      message:
+      auth_type:
         type: "string"
+  payment_response:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      payment:
+        type: "array"
+        items:
+          type: "object"
+          properties: 
+            user_id:
+              type: "integer"
+            payment_id:
+              type: "integer"
+            payment_type:
+              type: "string"
+            title:
+              type: "string"
+            processing_date:
+              type: "string"
+  analytics_response:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      payment:
+        type: "array"
+        items:
+          type: "object"
+          properties: 
+            month:
+              type: "integer"
+            year:
+              type: "integer"
+            count_date:
+              type: "integer"
+  messages_response:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      messages:
+        type: "array"
+        items:
+          $ref: "#/definitions/Messages"
+          
+        
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

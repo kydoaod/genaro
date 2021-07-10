@@ -4,7 +4,7 @@ const db = require('./db.service');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const randomstring = require("randomstring");
-const { Op } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 const { OAuth2Client } = require('google-auth-library');
 
 const client = new OAuth2Client(JSON.parse(process.env.GOOGLE_OAUTH_CRED).ClientID)
@@ -138,9 +138,57 @@ class Account {
         };
     }
 
-    //TODO: Use this in every secured endpoint
-    async checkToken(req, res) {
-        //passport.authenticate('oauth-bearer', {session: false})
+    async getPayments(user_id){
+        let payments = await db.payments.findAll({
+            where:{
+                user_id: user_id
+            },
+            raw: true
+        });
+        return {
+            success: payments? true : false,
+            payments: payments
+        };
+    }
+
+    async getAnalytics(user_id){
+        let analytics = await db.payments.findAll({
+            where:{
+                [Op.and]: [
+                    //Subject for discussion
+                    //Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('processing_date')), 2021),
+                    {
+                        user_id: user_id
+                    }
+                ]
+            },
+            attributes: [
+                [Sequelize.literal(`MONTH(processing_date)`), 'month'],
+                [Sequelize.literal(`YEAR(processing_date)`), 'year'],
+                [Sequelize.literal(`COUNT(*)`), 'count_date']
+            ],
+            group: [Sequelize.literal(`MONTH(processing_date)`), Sequelize.literal(`YEAR(processing_date)`)],
+            order: [Sequelize.literal(`YEAR(processing_date)`)],
+            raw: true
+        });
+        return {
+            success: analytics? true : false,
+            payments: analytics
+        };
+        
+    }
+
+    async getMessages(user_id){
+        let messages = await db.messages.findAll({
+            where:{
+                user_id: user_id
+            },
+            raw: true
+        });
+        return {
+            success: messages? true : false,
+            messages: messages
+        };
     }
 }
 

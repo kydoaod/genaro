@@ -24,8 +24,14 @@ class UserController {
         res.status(200).send({ success: true });
     }
 
+    async getAnalytics(req, res) {
+        let analytics = await this.accountService.getAnalytics(req.body.user_id);
+        res.status(analytics.status? 200 : 400).send(analytics);
+    }
+
     async getMessages(req, res) {
-        res.status(200).send({ success: true });
+        let messages = await this.accountService.getMessages(req.body.user_id);
+        res.status(messages.status? 200 : 400).send(messages);
     }
 
     async getSettings(req, res) {
