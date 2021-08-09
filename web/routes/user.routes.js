@@ -8,6 +8,6 @@ apiUser.post('/auth/standard', wrap(async (req, res) => userController.login(req
 apiUser.post('/auth/google', wrap(async (req, res) => userController.googleLogin(req, res)));
 apiUser.post('/auth/fb', wrap(async (req, res) => userController.fbLogin(req, res)));
 apiUser.post('/analytics', wrap(async (req, res) => userController.getAnalytics(req, res)));
-apiUser.post('/messages', wrap(async (req, res) => userController.getMessages(req, res)));
+apiUser.get('/search-users', wrap(async (req, res) => userController.searchUsers(req, res)));
 
 module.exports = apiUser;

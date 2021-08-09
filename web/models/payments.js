@@ -1,3 +1,27 @@
+const { Schema, model } = require("mongoose");
+
+const schema = Schema({
+  user_id: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+  },
+  payment_type: {
+    type: 'String',
+    default: 'withdraw'
+  },
+  title: {
+    type: 'String',
+    default: ''
+  },
+  processing_date: {
+      type: 'Date',
+      default: Date.now
+  }
+});
+
+module.exports = model("Payment", schema);
+
+/*
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('payments', {
@@ -43,3 +67,4 @@ module.exports = function(sequelize, DataTypes) {
     ]
   });
 };
+*/

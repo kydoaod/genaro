@@ -1,0 +1,14 @@
+const config = {
+    "google":{
+        "clientId": "$GOOGLE_CLIENT_ID"
+    },
+    "facebook":{
+        "appId" : "$FB_APP_ID"
+    },
+    "linkedIn":{
+        "clientId" : "$LN_APP_ID"
+    },
+    "socketServer": window.location.origin
+}
+
+module.exports =  { config }

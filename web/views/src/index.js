@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import './index.css';
+import { Header } from './components/Header';
 import App from './App';
 import Login from './page/Login/Login';
 import reportWebVitals from './reportWebVitals';
@@ -11,7 +12,7 @@ ReactDOM.render(
   
   <Router>
     <div>
-      <hr />
+      <Header/>
       <Switch>
         <Route exact path="/" component={App} />
         <Route exact path="/login" component={Login} />

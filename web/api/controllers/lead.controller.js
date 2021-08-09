@@ -1,16 +1,22 @@
-//var AccountService = require('../../services/account.service');
+var LeadService = require('../../services/lead.service');
 
 class LeadController {
     constructor() {
-        //this.accountService = new AccountService();
+        this.leadService = new LeadService();
     }
 
     async getEvents(req, res) {
+        this.leadService.getEvents(req.params.user_id)
         res.status(200).send({ success: true });
     }
 
     async getLeads(req, res) {
         res.status(200).send({ success: true });
+    }
+
+    async getLead(req, res) {
+        let leadResponse = await this.leadService.getLead(req.params.id);
+        res.status(leadResponse.success? 200 : 400).send(leadResponse);
     }
 
     async getHeroes(req, res) {
@@ -19,6 +25,11 @@ class LeadController {
 
     async newHero(req, res) {
         res.status(200).send({ success: true });
+    }
+
+    async sendLead(req, res) {
+        let leadResponse = await this.leadService.sendLead(req.body);
+        res.status(leadResponse.success? 200 : 400 ).send(leadResponse);
     }
 }
 

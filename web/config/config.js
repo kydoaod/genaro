@@ -1,4 +1,5 @@
 const fs = require('fs');
+const mongoose = require("mongoose");
 
 const env = 
         fs.existsSync('./config/config.prod.json')? "prod" : 
@@ -7,7 +8,7 @@ const env =
         "local";
 var config 
 var envConfig
-var bearerStrategy
+var connection
 
 try {
     if (env === 'production' || env === 'prod'){
@@ -18,40 +19,50 @@ try {
         config = require('./config.uat.json');
     } 
     else {
-        config = require('./config.json');
+        config = {
+    "local": {
+        "HOST": "0.0.0.0",
+        "PROTOCOL" : "http",
+        "LOG_PATH": "logs/",
+        "PORT": 5000,
+        "DB": {
+            "mongodb_url": "mongodb://128.199.10.133:27017/Genero"
+        },
+        "ADMIN_CRED" : {
+            "username" : "username",
+            "algorithm": "algorithm",
+            "password" : "password",
+            "token" : "token",
+            "email": "email@email.com",
+            "email_password": "P@$$w0rd"
+        },
+        "GOOGLE_OAUTH_CRED":{
+            "ClientID":"560202600909-c94rsttjg9bcbjgn8a4h9nrgcbcl1gpf.apps.googleusercontent.com",
+            "ClientSecret":"kF14KRzrmZqd87Ecj1wR1acf"
+        },
+        "SOCKET_CONFIG": {
+            "pingInterval": 10000,
+            "pingTimeout": 30000,
+            "cors": {
+            }
+        }
+    }
+};
     }
 
     envConfig = config[env];
     Object.keys(envConfig).forEach((key) => {
-         process.env[key] = ((typeof envConfig[key] === 'object')? JSON.stringify(envConfig[key]) : envConfig[key]);
+        process.env[key] = ((typeof envConfig[key] === 'object')? JSON.stringify(envConfig[key]) : envConfig[key]);
     }); 
+    mongoose.connect(JSON.parse(process.env.DB).mongodb_url, { useUnifiedTopology: true, useNewUrlParser: true });
+    connection = mongoose.connection;
+    connection.once("open", function() {
+        console.log("MongoDB database connection established successfully");
+    });
 
 } catch(e) {
     console.log(e);   
     console.log('Error: Could not find configuration file. Please create config.json file, base it from config.json.example');
-    /**TEMPORARY**/
-    //process.env["HOST"] = "localhost";
-    //process.env["PORT"] = 5000;
-    process.env["DB"] = JSON.stringify({
-        "user": "1XHs3O5D26",
-        "host": "remotemysql.com",
-        "database": "1XHs3O5D26",
-        "password": "iImheZ6v1F",
-        "port": 3306,
-        "dialect": "mysql"
-    });
-    process.env["ADMIN_CRED"] = JSON.stringify({
-        "username" : "username",
-        "algorithm": "algorithm",
-        "password" : "password",
-        "token" : "token",
-        "email": "email@email.com",
-        "email_password": "P@$$w0rd"
-    });
-    process.env["GOOGLE_OAUTH_CRED"] = JSON.stringify({
-        "ClientID":"560202600909-c94rsttjg9bcbjgn8a4h9nrgcbcl1gpf.apps.googleusercontent.com",
-        "ClientSecret":"kF14KRzrmZqd87Ecj1wR1acf"
-    });
     //process.exit(1);
     
 }

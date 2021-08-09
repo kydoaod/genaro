@@ -1,7 +1,6 @@
 
 const handleLogin = {
   googleLogin:  async googleData => {
-    console.log(googleData)
     const res = await fetch("/v1/auth/google", {
         method: "POST",
         body: JSON.stringify({
@@ -10,10 +9,12 @@ const handleLogin = {
       headers: {
         "Content-Type": "application/json"
       }
-    })
+    });
     const data = await res.json();
-    console.log(data);
-    // store returned user in a context?
+    if(data.user_id){
+      localStorage.setItem('user_data', JSON.stringify(data));
+      window.location.href = "/";
+    }
   },
   fBLogin: async fbData => {
     const res = await fetch("/v1/auth/fb", {
@@ -22,10 +23,12 @@ const handleLogin = {
       headers: {
         "Content-Type": "application/json"
       }
-    })
+    });
     const data = await res.json();
-    console.log(data);
-    // store returned user in a context?
+    if(data.user_id){
+      localStorage.setItem('user_data', JSON.stringify(data));
+      window.location.href = "/";
+    }
   },
   linkedInLogin: (linkedInData) => {
     console.log(linkedInData)

@@ -25,13 +25,17 @@ class UserController {
     }
 
     async getAnalytics(req, res) {
-        let analytics = await this.accountService.getAnalytics(req.body.user_id);
+        let analytics = await this.accountService.getAnalytics(req.body.user_id, req.body.group_by, req.body.start, req.body.end);
         res.status(analytics.status? 200 : 400).send(analytics);
     }
 
-    async getMessages(req, res) {
-        let messages = await this.accountService.getMessages(req.body.user_id);
-        res.status(messages.status? 200 : 400).send(messages);
+    async searchUsers(req, res) {
+        let usersResponse = await this.accountService.getUsers(
+            req.query.name, 
+            (parseInt(req.query.page) || 1),
+            (parseInt(req.query.page_size) || 10)
+        );
+        res.status(usersResponse.status? 200 : 400).send(usersResponse);
     }
 
     async getSettings(req, res) {
@@ -41,6 +45,7 @@ class UserController {
     async updateSettings(req, res) {
         res.status(200).send({ success: true });
     }
+
 }
 
 const userController = new UserController();

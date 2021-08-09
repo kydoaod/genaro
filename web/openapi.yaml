@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "Documentation for genaro website"
+  description: "Documentation for genero website"
   version: "1.0.0"
-  title: "Genaro API"
+  title: "Genero API"
   termsOfService: "http://swagger.io/terms/"
   contact:
     email: "apiteam@swagger.io"
@@ -14,16 +14,14 @@ basePath: "/v1"
 tags:
 - name: "User"
   description: "Everything about user details"
-  externalDocs:
-    description: "Find out more"
-    url: "http://swagger.io"
 - name: "Leads"
   description: "APIs for Leads"
+- name: "Messages"
+  description: "APIs for Messages"
+- name: "Notifications"
+  description: "APIs for Notifications"
 - name: "Payments"
   description: "APIs for payments"
-  externalDocs:
-    description: "Find out more about our store"
-    url: "http://swagger.io"
 schemes:
 - "https"
 - "http"
@@ -103,10 +101,37 @@ paths:
             $ref: "#/definitions/auth_response"
         "403":
           description: "Invalid username or password"
+  /message-details:
+    get:
+      tags:
+      - "Messages"
+      summary: "Get message"
+      description: ""
+      operationId: "getMessage"
+      produces:
+      - "application/json"
+      parameters:
+          - name: user_id
+            in: query
+            description: User ID input(MongoDB Object)
+            required: true
+            type: "string"
+          - name: message_id
+            in: query
+            description: Message ID input(MongoDB Object)
+            required: true
+            type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/message_response"
+        "400":
+          description: "Invalid input"
   /messages:
     post:
       tags:
-      - "User"
+      - "Messages"
       summary: "Get messages"
       description: ""
       operationId: "getMessages"
@@ -128,13 +153,13 @@ paths:
             $ref: "#/definitions/messages_response"
         "400":
           description: "Invalid input"
-  /events:
-    get:
+  /send-message:
+    post:
       tags:
-      - "Leads"
-      summary: "Fetch events"
+      - "Messages"
+      summary: "Send messages"
       description: ""
-      operationId: "getEvents"
+      operationId: "sendMessage"
       consumes:
       - "application/json"
       produces:
@@ -142,10 +167,84 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Events parameters"
+        description: "Fetch analytics"
         required: true
         schema:
-          $ref: "#/definitions/Holder"
+          $ref: "#/definitions/request_send_message"
+      responses:
+        "200":
+          description: "Create message response"
+          schema:
+            $ref: "#/definitions/message_response"
+        "400":
+          description: "Invalid input"
+  /notifications:
+    post:
+      tags:
+      - "Notifications"
+      summary: "Get Notifications"
+      description: ""
+      operationId: "getNotifications"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Fetch notifications"
+        required: true
+        schema:
+          $ref: "#/definitions/request_messages"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Notifications"
+        "400":
+          description: "Invalid input"
+  /notification:
+    delete:
+      tags:
+      - "Notifications"
+      summary: "Remove a Notification"
+      description: ""
+      operationId: "removeNotification"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Remove notification"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            user_id:
+              type: "string"
+            notification_id:
+              type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Notifications"
+        "400":
+          description: "Invalid input"
+  /events/{user_id}:
+    get:
+      tags:
+          - "User"
+      summary: "Get event trail by user_id"
+      operationId: getEvents
+      parameters:
+        - name: user_id
+          in: path
+          description: "Get event trail by user_id"
+          required: true
+          type: string
       responses:
         "200":
           description: "successful operation"
@@ -154,6 +253,10 @@ paths:
             properties:
               success:
                 type: "boolean"
+              event:
+                type: "array"
+                items:
+                  $ref: "#/definitions/Event"
         "403":
           description: "Invalid input"
   /leads:
@@ -184,6 +287,56 @@ paths:
             properties:
               success:
                 type: "boolean"
+        "403":
+          description: "Invalid input"
+  /lead/{id}:
+    get:
+      tags:
+          - "Leads"
+      summary: "Get lead detail by id"
+      operationId: getLead
+      parameters:
+        - name: id
+          in: path
+          description: "Get lead detail by id"
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              success:
+                type: "boolean"
+              lead:
+                type: "object"
+                $ref: "#/definitions/Lead"
+        "403":
+          description: "Invalid input"
+  /send-lead:
+    post:
+      tags:
+      - "Leads"
+      summary: "Send lead"
+      description: ""
+      operationId: "sendLead"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Credentials of user"
+        required: true
+        schema:
+          $ref: "#/definitions/request_send_lead"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/send_lead_response"
         "403":
           description: "Invalid input"
   /heroes:
@@ -403,18 +556,6 @@ paths:
                 type: "boolean"
         "403":
           description: "Invalid input"
-securityDefinitions:
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
 definitions:
   User:
     type: "object"
@@ -460,18 +601,12 @@ definitions:
   Messages:
     type: "object"
     properties:
-      message_id:
-        type: "integer"
-        format: "int64"
       user_id:
-        type: "integer"
-        format: "int64"
+        type: "string"
       sender_id:
-        type: "integer"
-        format: "int64"
+        type: "string"
       sender_name:
-        type: "integer"
-        format: "int64"
+        type: "string"
       title:
         type: "string"
       message:
@@ -480,27 +615,52 @@ definitions:
         type: "string"
     xml:
       name: "Messages"
+  Notifications:
+    type: "object"
+    properties:
+      user_id:
+        type: "string"
+      notification_data:
+        type: "array"
+        items:
+            type: "object"
+            properties:
+              notif_type:
+                type: "string"
+              description:
+                type: "string"
+              data_url:
+                type: "string"
+              web_url:
+                type: "string"
+            
+    xml:
+      name: "Messages"
   Lead:
     type: "object"
     properties:
-      lead_id:
+      sender_id:
         type: "string"
-      lead_name:
+      client_name:
         type: "string"
-      phone:
+      phone_number:
         type: "string"
       email:
         type: "string"
       address:
         type: "string"
-      mode_contact:
+      insurance_type:
         type: "string"
-      type:
+      contact_form:
         type: "string"
-      custom_details:
+      other_notes:
         type: "string"
-      validated:
-        type: "integer"
+      driver_dobs:
+        type: "string"
+      car_details:
+        type: "string"
+      liability_details:
+        type: "string"
     xml:
       name: "Lead"
   Hero:
@@ -514,6 +674,23 @@ definitions:
         type: "string"
     xml:
       name: "Lead"
+  Event:
+    type: "object"
+    properties:
+      initiator_user:
+        type: "string"
+      target_user:
+        type: "string"
+      transaction_type:
+        type: "string"
+      title:
+        type: "string"
+      contents:
+        type: "string"
+      details_url:
+        type: "string"
+    xml:
+      name: "Holder"
   Holder:
     type: "object"
     properties:
@@ -557,17 +734,33 @@ definitions:
     properties:
       user_id:
         type: "integer"
-        format: "int64"
+      group_by:
+        type: "string"
+      start:
+        type: "string"
+      end:
+        type: "string"
     xml:
       name: "request_analytics"
+  request_send_message:
+    type: "object"
+    $ref: "#/definitions/Messages"
+    xml:
+      name: "request_messages"
   request_messages:
     type: "object"
     properties:
       user_id:
-        type: "integer"
-        format: "int64"
+        type: "string"
     xml:
       name: "request_messages"
+  request_send_lead:
+    type: "object"
+    properties:
+      schema:
+        $ref: "#/definitions/Lead"
+    xml:
+      name: "request_lead"
   auth_response:
     type: "object"
     properties:
@@ -589,16 +782,8 @@ definitions:
         items:
           type: "object"
           properties: 
-            user_id:
-              type: "integer"
-            payment_id:
-              type: "integer"
-            payment_type:
-              type: "string"
-            title:
-              type: "string"
-            processing_date:
-              type: "string"
+            schema:
+              $ref: "#/definitions/Payments"
   analytics_response:
     type: "object"
     properties:
@@ -609,12 +794,25 @@ definitions:
         items:
           type: "object"
           properties: 
-            month:
+            date:
+              type: "object"
+              properties: 
+                month:
+                  type: "integer"
+                year:
+                  type: "integer"
+            total:
               type: "integer"
-            year:
-              type: "integer"
-            count_date:
-              type: "integer"
+  send_lead_response:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      lead:
+        type: "object"
+        properties:
+          schema:
+            $ref: "#/definitions/Lead"
   messages_response:
     type: "object"
     properties:
@@ -624,8 +822,14 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Messages"
-          
-        
+  message_response:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      message:
+        type: "object"
+        $ref: "#/definitions/Messages"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

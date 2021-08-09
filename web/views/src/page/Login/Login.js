@@ -2,16 +2,18 @@ import React from 'react';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 import LinkedIn  from 'react-linkedin-login-oauth2';
-import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png'
-
+import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png';
 import './Login.css';
 import handleLogin from '../../services/LoginService';
+import { config } from '../../config/config';
+
 
 function Login() {
+
   return (
     <div className="Authentication">
       <GoogleLogin
-          clientId={"560202600909-c94rsttjg9bcbjgn8a4h9nrgcbcl1gpf.apps.googleusercontent.com"}
+          clientId={config.google.clientId}
           buttonText=""
           className="ct-button ct-button--secondary"
           onSuccess={ handleLogin.googleLogin }
@@ -19,7 +21,7 @@ function Login() {
           cookiePolicy="single_host_origin"
       />
       <FacebookLogin
-        appId="968042637284782"
+        appId={config.facebook.appId}
         autoLoad={true}
         fields="name,email,picture"
         scope="public_profile,user_friends"
@@ -27,7 +29,7 @@ function Login() {
         icon="fa-facebook" 
       />
       <LinkedIn
-          clientId="865p81rgrlnw9r"
+          clientId={config.linkedIn.clientId}
           scope="r_emailaddress"
           onFailure={handleLogin.linkedInLoginFail}
           onSuccess={handleLogin.linkedInLogin}
