@@ -112,8 +112,8 @@ const useStyles = makeStyles((theme) => ({
 
 export async function sendMessage(){
     let message = await handleMessage.sendMessage({
-        "user_id": "60f823da4dc0a9020ce30680",
-        "sender_id": "60f823da4dc0a9020ce30680",
+        "user_id": "61110aeda8216f001579c783",
+        "sender_id": "61110aeda8216f001579c783",
         "sender_name": "Kydo Solis",
         "title": "String",
         "message": "String"
