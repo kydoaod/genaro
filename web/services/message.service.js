@@ -52,7 +52,7 @@ class Message {
                     user_id: messageData.user_id,
                     notification_data: [{
                         notif_type: 'message',
-                        description: 'You have receive message from ' + messageDetails.sender_id.name,
+                        description: 'You have receive message from ' + messageDetails.sender_name,
                         data_url: '/v1/message-details?user_id=' + messageData.user_id + '&message_id=' + message._id,
                         web_url: '/message-details?user_id=' + messageData.user_id + '&message_id=' + message._id
                     }]
