@@ -57,6 +57,9 @@ class Message {
                         web_url: '/message-details?user_id=' + messageData.user_id + '&message_id=' + message._id
                     }]
                 })
+		notificationData = await db.notificationModel.findOne({
+                    user_id: messageData.user_id 
+            	});
             }
             return {
                 success: message? true : false,
