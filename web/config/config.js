@@ -21,10 +21,10 @@ try {
     else {
         config = {
     "local": {
-        "HOST": "0.0.0.0",
+        //"HOST": "0.0.0.0",
         "PROTOCOL" : "http",
         "LOG_PATH": "logs/",
-        "PORT": 5000,
+        //"PORT": 5000,
         "DB": {
             "mongodb_url": "mongodb://128.199.10.133:27017/Genero"
         },
